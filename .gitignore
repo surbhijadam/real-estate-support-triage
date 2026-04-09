@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables (sensitive secrets!)
+.env
+
+# Database file (runtime data, not source code)
+triage_tickets.db
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
