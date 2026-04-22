@@ -2,12 +2,12 @@
 
 import os
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
+llm = ChatGroq(model='llama-3.3-70b-versatile', temperature=0.3)
 
 def generate_response(message: str, classification: dict, entities: dict) -> str:
     system_prompt = f"""

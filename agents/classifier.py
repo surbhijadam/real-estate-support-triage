@@ -3,13 +3,13 @@
 import os, json
 from dotenv import load_dotenv
 # import spacy
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 # nlp = spacy.load("en_core_web_sm")
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+llm = ChatGroq(model='llama-3.3-70b-versatile', temperature=0)
 
 def clean_json(text: str) -> str:
     """Strip markdown code fences if Gemini wraps response in them."""

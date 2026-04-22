@@ -1,5 +1,8 @@
 # api/server.py
 
+from datetime import datetime
+import uuid
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -43,7 +46,7 @@ class IncomingMessage(BaseModel):
     source: str = "web"  # email, whatsapp, web, etc.
 
 class TriageResponse(BaseModel):
-    id: int
+    id: str
     original_message: str
     urgency: str
     intent: str
@@ -77,10 +80,13 @@ def chat_ui():
     )
     return FileResponse(html_path, media_type="text/html")
 
-@app.post("/triage", response_model=TriageResponse)
-def triage(data: IncomingMessage, db: Session = Depends(get_db)):
-    # Run the 3-agent pipeline
+@app.post('/triage', response_model=TriageResponse)
+def triage(data: IncomingMessage):
     result = triage_pipeline(data.message)
+    result['source'] = data.source
+    result['id'] = str(uuid.uuid4())
+    result['created_at'] = datetime.now().isoformat()
+    return result
 
     # Persist ticket to DB
     ticket: Ticket = Ticket(
@@ -151,3 +157,5 @@ def delete_ticket(ticket_id: int, db: Session = Depends(get_db)):
     db.delete(t)
     db.commit()
     return {"deleted": ticket_id}
+
+
